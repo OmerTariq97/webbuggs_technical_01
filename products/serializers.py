@@ -1,21 +1,26 @@
-from products.models import Product, Colors, SubCategory, ProductCategory
+from products.models import (
+    Product, 
+    Colors, 
+    SubCategory, 
+    ProductCategory
+)
 from rest_framework import serializers
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
-        fields = "__all__"
+        exclude = ['is_deleted']
 
 
 class ColorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colors
-        fields = "__all__"
+        exclude = ['is_deleted']
 
 class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
-        fields = '__all__'
+        exclude = ['is_deleted']
 
 
 # class CustomField(serializers.Field):
@@ -35,33 +40,6 @@ class ProductSerializer(serializers.ModelSerializer):
         # fields = "__all__"
         exclude = ['is_deleted']
     
-class TopCategoriesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SubCategory
-        fields = "__all__"
-
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-
-    def validate(self, attrs):
-        email = attrs.get('email')
-        password = attrs.get('password')
-
-        if email and password:
-            user = authenticate(request=self.context.get('request'),
-                                username=email, password=password)
-
-            if not user:
-                msg = _('Unable to log in with provided credentials.')
-                raise serializers.ValidationError(msg, code='authorization')
-        else:
-            msg = _('Must include "email" and "password".')
-            raise serializers.ValidationError(msg, code='authorization')
-
-        attrs['user'] = user
-        return attrs
-
 
 
 

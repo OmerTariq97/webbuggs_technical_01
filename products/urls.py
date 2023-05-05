@@ -4,12 +4,12 @@ from . import views
 
 router = DefaultRouter()
 
+
 router.register("ProductViewSet", views.ProductViewSet)
 router.register("ColorsViewSet", views.ColorsViewSet)
 router.register("SubCategoryViewSet", views.SubCategoryViewSet)
+router.register("ProductCategoryViewSet", views.ProductCategoryViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('login/', views.LoginView.as_view()),
-    path('logout/', views.LogoutView.as_view())
 ]
