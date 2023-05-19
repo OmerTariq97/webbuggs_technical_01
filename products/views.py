@@ -66,21 +66,21 @@ class ProductViewSet(viewsets.ModelViewSet):
         instance.save()
         return Response({'msg':'deleted'})
 
-    def list(self, request):
-        my_filter_SKU = self.request.query_params.get('filter_SKU')
-        my_filter_title = self.request.query_params.get('filter_title')
-        my_filter_description = self.request.query_params.get('filter_description')
+    # def list(self, request):
+    #     my_filter_SKU = self.request.query_params.get('filter_SKU')
+    #     my_filter_title = self.request.query_params.get('filter_title')
+    #     my_filter_description = self.request.query_params.get('filter_description')
 
-        queryset = self.get_queryset()
-        if my_filter_SKU:
-            queryset = queryset.filter(sku__icontains=my_filter_SKU)
-        elif my_filter_title:
-            queryset = queryset.filter(title__icontains=my_filter_title)
-        elif my_filter_description:
-            queryset = queryset.filter(description__icontains=my_filter_description)
+    #     queryset = self.get_queryset()
+    #     if my_filter_SKU:
+    #         queryset = queryset.filter(sku__icontains=my_filter_SKU)
+    #     elif my_filter_title:
+    #         queryset = queryset.filter(title__icontains=my_filter_title)
+    #     elif my_filter_description:
+    #         queryset = queryset.filter(description__icontains=my_filter_description)
 
-        serializer = self.get_serializer(queryset, many = True)
-        return Response(serializer.data)
+    #     serializer = self.get_serializer(queryset, many = True)
+    #     return Response(serializer.data)
 
     # @action(detail=False, methods=['get'])
     # def filter(self, request):
