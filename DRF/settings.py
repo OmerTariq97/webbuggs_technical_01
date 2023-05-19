@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^egkom%&30-*6-kq@^bv68v+p_^2(hn+vy*lghw_#6gb4sle1c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', "127.0.0.1"]
 AUTH_USER_MODEL = "accounts.User"
 
 # Application definition
@@ -44,6 +44,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'django_apscheduler',
+    'django_filters',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
 
 
 
@@ -72,6 +80,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+
             ],
         },
     },
@@ -102,10 +112,19 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3
+}
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
@@ -130,6 +149,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -161,3 +187,32 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'test.omer100@gmail.com' # Your email address
 EMAIL_HOST_PASSWORD = 'bdqumnsklvpvpamz' # Your email password or app password if you use two factor authentication
 
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
+
+
+SITE_ID = 1
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+   
+    
+        'github': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '1e705a9c3d69fd042114',
+            'secret': '8298402b9fcac895c9f9a8ab8b0f9833c96a327b',
+            'key': ''
+        }
+    }
+}
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = ("mandatory")
+
+# google client id: 643261047399-q8q0d7p0g9ev3b5agpi73t539h9ef86h.apps.googleusercontent.com
+# secret: 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

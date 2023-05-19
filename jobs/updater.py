@@ -7,5 +7,5 @@ from .jobs import testfunc
 def start():
     scheduler = BackgroundScheduler()
     # scheduler.add_jobstore(DjangoJobStore(), 'default')
-    scheduler.add_job(testfunc, 'interval', seconds=5, args = ["Specified time!"])
-    scheduler.start()
+    # scheduler.add_job(testfunc, 'interval', seconds=5, args = ["Specified time!"])
+    # scheduler.start()

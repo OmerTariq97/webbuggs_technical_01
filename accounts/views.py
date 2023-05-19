@@ -1,24 +1,19 @@
 from rest_framework import viewsets
 from .models import User
 from products.models import Product
-from .serializers import UserSerializer,LoginSerializer
-from django.utils.decorators import method_decorator
+from .serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from django.core.exceptions import ValidationError
-from django.db.models import Count
 from rest_framework.decorators import action
-from django.http import HttpResponse
 
 # Create your views here.
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
@@ -49,7 +44,7 @@ class LoginView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
         try:
-            Account = User.objects.get(email = email)
+            account = User.objects.get(email = email)
         except BaseException as e:
             raise ValidationError({"400": f'{str(e)}'})
         user = authenticate(request=request, email=email, password=password)
@@ -57,9 +52,9 @@ class LoginView(APIView):
             return Response({'error': 'Invalid credentials'})
 
         token, _ = Token.objects.get_or_create(user=user)
-        if Account:
-            if Account.is_active:
-                login(request, Account)
+        if account:
+            if account.is_active:
+                login(request, account, backend="django.contrib.auth.backends.ModelBackend")
 
                 Res = {"token": token.key}
 
